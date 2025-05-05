@@ -12,6 +12,11 @@ public class RecordManager : MonoBehaviour
     private int chokiCount = 0;
     private int paaCount = 0;
 
+    void Start()
+    {
+        LoadRecord(); // ゲーム開始時に保存済みデータを読み込み
+    }
+
     // 戦績画面を開く
     public void OnClickShowRecord()
     {
@@ -31,12 +36,14 @@ public class RecordManager : MonoBehaviour
     public void AddWin()
     {
         winCount++;
+        SaveRecord(); // 自動保存
     }
 
     // 負けを記録
     public void AddLose()
     {
         loseCount++;
+        SaveRecord(); // 自動保存
     }
 
     // 手を記録（0:グー、1:チョキ、2:パー）
@@ -48,6 +55,7 @@ public class RecordManager : MonoBehaviour
             case 1: chokiCount++; break;
             case 2: paaCount++; break;
         }
+        SaveRecord(); // 自動保存
     }
 
     // 戦績のテキストを更新
@@ -69,5 +77,33 @@ public class RecordManager : MonoBehaviour
             $"グー: {guuCount}回（{guuRate:F1}%）\n" +
             $"チョキ: {chokiCount}回（{chokiRate:F1}%）\n" +
             $"パー: {paaCount}回（{paaRate:F1}%）";
+    }
+
+    // 戦績を保存
+    private void SaveRecord()
+    {
+        PlayerPrefs.SetInt("WinCount", winCount);
+        PlayerPrefs.SetInt("LoseCount", loseCount);
+        PlayerPrefs.SetInt("GuuCount", guuCount);
+        PlayerPrefs.SetInt("ChokiCount", chokiCount);
+        PlayerPrefs.SetInt("PaaCount", paaCount);
+        PlayerPrefs.Save();
+    }
+
+    // 戦績を読み込み
+    private void LoadRecord()
+    {
+        winCount = PlayerPrefs.GetInt("WinCount", 0);
+        loseCount = PlayerPrefs.GetInt("LoseCount", 0);
+        guuCount = PlayerPrefs.GetInt("GuuCount", 0);
+        chokiCount = PlayerPrefs.GetInt("ChokiCount", 0);
+        paaCount = PlayerPrefs.GetInt("PaaCount", 0);
+    }
+
+    // 戦績をリセット（必要なら）
+    public void ResetRecord()
+    {
+        winCount = loseCount = guuCount = chokiCount = paaCount = 0;
+        SaveRecord();
     }
 }

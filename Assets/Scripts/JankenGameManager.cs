@@ -27,7 +27,7 @@ public class JankenGameManager : MonoBehaviour
     public GameObject timeoutDisplay;
 
     [Header("Record")]
-    public RecordManager recordManager;  // 追加：戦績記録用
+    public RecordManager recordManager;
 
     private bool hasSelected = false;
     private int playerChoice = -1;
@@ -99,8 +99,11 @@ public class JankenGameManager : MonoBehaviour
         handButtons.SetActive(false);
         playerChoice = choice;
 
-        // 🔸 プレイヤーの手を記録
-        recordManager.AddHand(choice);
+        // プレイヤーの手を記録（自動保存される）
+        if (recordManager != null)
+        {
+            recordManager.AddHand(choice);
+        }
 
         StartCoroutine(DelayedShowHandAndJudge());
     }
@@ -126,8 +129,9 @@ public class JankenGameManager : MonoBehaviour
         {
             result = "時間切れ！\nあなたの負け！";
 
-            // 🔸 負けを記録
-            recordManager.AddLose();
+            // 負けを記録
+            if (recordManager != null)
+                recordManager.AddLose();
 
             ShowAgainPanel();
         }
@@ -143,8 +147,9 @@ public class JankenGameManager : MonoBehaviour
         {
             result = $"あなたの勝ち！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
 
-            // 🔸 勝ちを記録
-            recordManager.AddWin();
+            // 勝ちを記録
+            if (recordManager != null)
+                recordManager.AddWin();
 
             ShowAgainPanel();
         }
@@ -152,8 +157,9 @@ public class JankenGameManager : MonoBehaviour
         {
             result = $"コンピューターの勝ち！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
 
-            // 🔸 負けを記録
-            recordManager.AddLose();
+            // 負けを記録
+            if (recordManager != null)
+                recordManager.AddLose();
 
             ShowAgainPanel();
         }
