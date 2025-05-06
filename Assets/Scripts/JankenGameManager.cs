@@ -64,7 +64,7 @@ public class JankenGameManager : MonoBehaviour
         playerChoice = -1;
 
         countdownText.gameObject.SetActive(true);
-        for (int i = 3; i > 0; i--)
+        for (int i = 15; i > 0; i--)//制限時間
         {
             countdownText.text = $"残り時間：{i}";
             yield return new WaitForSeconds(1f);
@@ -137,7 +137,8 @@ public class JankenGameManager : MonoBehaviour
         }
         else if (playerHand == cpuHand)
         {
-            result = $"あいこ！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
+            //result = $"あいこ！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
+            result = $"あいこ!";
             resultText.gameObject.SetActive(true);
             resultText.text = result;
             StartCoroutine(WaitAndRestart());
@@ -145,7 +146,8 @@ public class JankenGameManager : MonoBehaviour
         }
         else if ((playerHand == 0 && cpuHand == 1) || (playerHand == 1 && cpuHand == 2) || (playerHand == 2 && cpuHand == 0))
         {
-            result = $"あなたの勝ち！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
+            //result = $"あなたの勝ち！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
+            result = $"あなたの勝ち！";
 
             // 勝ちを記録
             if (recordManager != null)
@@ -155,7 +157,8 @@ public class JankenGameManager : MonoBehaviour
         }
         else
         {
-            result = $"コンピューターの勝ち！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
+            //result = $"コンピューターの勝ち！\n（あなた：{hands[playerHand]}、CPU：{hands[cpuHand]}）";
+            result = $"コンピューターの勝ち！";
 
             // 負けを記録
             if (recordManager != null)
